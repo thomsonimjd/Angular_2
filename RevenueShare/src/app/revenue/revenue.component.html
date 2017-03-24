@@ -1,0 +1,140 @@
+<div id="loader" [hidden]="!onSpinner">
+  <!--<img id="buffer-img" src="../../assets/img/wheel.gif" height="128" width="128"/>-->
+  <i id="buffer-img" class="fa fa-cog fa-spin fa-3x fa-fw" aria-hidden="true" style="color:#e36917;font-size:100px;"  ></i>
+</div>
+<div class="form">
+  <!--<img src="../assets/img/logo.png" alt="logo">-->
+  <div class="form-details">
+    <h4>Revenue Share</h4>
+
+    <div class="">
+
+      <div class=" validation">
+        <!-- FORM ============ -->
+
+        <form name="myForm" novalidate (ngSubmit)="saveNewRevenueShare()" #myForm="ngForm">
+
+          <div class="row ">
+
+            <div class="form-group col-sm-12">
+              <input *ngIf="hideElement" type="text" name="psi" [(ngModel)]="form_id" class="form-control">
+
+              <label>Mobitech Id*</label>
+              <select class="form-control" [(ngModel)]="form_mobitechId" name="mobiId" id="mobiId" ngControl="mobiId"
+                      required>
+                <!--<option value="" disabled selected>Select your option</option>-->
+                <option *ngFor="let id of mobitechIds" [ngValue]="id">{{id}}</option>
+              </select>
+            </div>
+
+            <div class="form-group col-sm-12">
+              <label>Vertical Id*</label>
+              <select class="form-control" [(ngModel)]="form_verticalType" name="vertical" id="vertical"
+                      ngControl="vertical" required>
+                <!--<option value="" disabled selected>Select your option</option>-->
+                <option [ngValue]="0"> Search</option>
+                <option [ngValue]="1"> Trend</option>
+                <option [ngValue]="2"> Content</option>
+              </select>
+            </div>
+
+            <div class="form-group col-sm-12">
+              <label>Publisher Sub Id*</label>
+              <input placeholder="Enter subscriber id" type="text" name="sub_id" id="sub_id"
+                     [(ngModel)]="form_subId" class="form-control">
+            </div>
+
+            <div class="form-group col-sm-12">
+              <label>Country Code*</label>
+              <input placeholder="Enter country code" type="text" name="country" id="country"
+                     [(ngModel)]="form_country" class="form-control">
+            </div>
+
+            <div class="form-group col-sm-12">
+              <label>Revenue Share*</label>
+              <input placeholder="Enter revenue share in numbers" type="text" name="revShare" id="revShare"
+                     ngControl="revShare" [(ngModel)]="form_revShare" class="form-control"
+                     pattern='^[0-9]+(.[0-9]{1,10})?$' required>
+            </div>
+
+            <div class="form-group  button">
+              <button type="submit" class="btn btn-primary" [disabled]="!myForm.form.valid">
+                {{!form_id?'Add':'Update'}}
+              </button>
+              <button class="btn btn-warning btn-large center" type="button" (click)="rest()">Reset From</button>
+            </div>
+
+          </div>
+
+        </form>
+
+      </div>
+
+    </div>
+  </div>
+
+  <div class="form-details">
+    <h4>Revenue Shares</h4>
+    <div class="medium-9 medium-offset-2 columns">
+      <table class="table table-hover">
+        <thead>
+        <tr>
+          <th hidden>Id</th>
+          <th>Mobitech Id</th>
+          <th>Vertical Id</th>
+          <th>Publisher SubId</th>
+          <th>Country Code</th>
+          <th>Revenue Share</th>
+          <th>Last Day RPM</th>
+          <th>Current RPM</th>
+          <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let rev of revenueShares | paginate: { itemsPerPage: 5, currentPage: p }">
+          <td hidden>{{rev.id}}</td>
+          <td>{{rev.mobitechId}}</td>
+          <td>{{rev.verticalType}}</td>
+          <td>{{rev.publisherSubId}}</td>
+          <td>{{rev.countryCode}}</td>
+          <td>{{rev.revenueShare}}</td>
+          <td>{{rev.lastRPM}}</td>
+          <td>{{rev.currentRPM}}</td>
+          <td>
+
+            <button class="btn btn-success" (click)="onClickEdit(rev)">
+              <i class="fa fa-pencil-square-o" style="font-size:20px;" aria-hidden="true"></i>
+            </button>
+            <button class="btn btn-danger" (click)="onClickDelete(rev.id)">
+              <i class="fa fa-trash-o" style="font-size:20px;" aria-hidden="true"></i>
+            </button>
+            <div class="btn-group">
+              <button style="font-size:15px;" type="button" class="btn btn-primary dropdown-toggle"
+                      data-toggle="dropdown">
+                RPM<span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="#" (click)="getRpmData(rev)">Find RPMs</a></li>
+                <li><a href="#" (click)="getRequiredRPMCalculated(rev)">Required RPM</a></li>
+              </ul>
+            </div>
+
+            <!--<button class="btn btn-primary" (click)="getRpmData(rev)">RPM</button>
+            <button class="btn btn-primary" (click)="getRequiredRPMCalculated(rev)">Required RPM</button>-->
+          </td>
+        </tr>
+        </tbody>
+      </table>
+      <pagination-controls (pageChange)="p = $event" #api></pagination-controls>
+    </div>
+  </div>
+
+  <div class="container-fluid"></div>
+  <div class="loader"><!--this is supposed to be on the HTML element but codepen won't let me do it-->
+
+    <div id="preloader"></div>
+
+  </div>
+</div>
+
+

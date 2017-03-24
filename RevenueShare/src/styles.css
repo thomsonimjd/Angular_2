@@ -1,0 +1,4 @@
+/* You can add global styles to this file, and also import other style files */
+.table thead tr th:nth-child(2)  {
+  min-width: 150px !important;
+}
